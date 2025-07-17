@@ -1,0 +1,29 @@
+name: Daily Price Sync
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # Runs daily at 1 AM UTC
+  workflow_dispatch:    # Manual trigger button in GitHub
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run price update script
+      run: node update_prices.js
+      env:
+        SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+        SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+        PRODUCT_ID: ${{ secrets.PRODUCT_ID }}
