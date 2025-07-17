@@ -48,7 +48,7 @@ async function updatePrices() {
           // Step 2: Calculate new price based on weight
           let newPrice;
           if (weight < 5) {
-            newPrice = (cost * 1.3 + 10).toFixed(2);
+            newPrice = (cost * 1.5 + 10).toFixed(2);
           } else {
             newPrice = (cost * 1.3 + 20).toFixed(2);
           }
