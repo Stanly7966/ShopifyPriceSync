@@ -26,4 +26,4 @@ jobs:
       env:
         SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
         SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
-        PRODUCT_ID: ${{ secrets.PRODUCT_ID }}
+        
