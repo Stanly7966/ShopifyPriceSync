@@ -1,11 +1,10 @@
 const axios = require('axios');
 
-// 🔧 Replace with your actual store and token
-const SHOP = process.env.SHOPIFY_STORE;     // From GitHub Secret
-const TOKEN = process.env.SHOPIFY_TOKEN; 
+const SHOP = process.env.SHOPIFY_STORE; // From GitHub Secret
+const TOKEN = process.env.SHOPIFY_TOKEN;
 
-
-
+// Sleep function to throttle API calls
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Shopify REST Admin API base
 const api = axios.create({
@@ -57,12 +56,19 @@ async function updatePrices() {
           console.log(`✅ Updating variant ${variantId} | Cost: £${cost}, Weight: ${weight}g → Price: £${newPrice}`);
 
           // Step 3: Update the variant's price
-          await api.put(`/variants/${variantId}.json`, {
-            variant: {
-              id: variantId,
-              price: newPrice,
-            },
-          });
+          try {
+            await api.put(`/variants/${variantId}.json`, {
+              variant: {
+                id: variantId,
+                price: newPrice,
+              },
+            });
+
+            // ✅ Throttle to avoid rate limit: 2 requests/sec
+            await sleep(600);
+          } catch (err) {
+            console.error(`❌ Error updating variant ${variantId}:`, err.response?.data || err.message);
+          }
         }
       }
 
