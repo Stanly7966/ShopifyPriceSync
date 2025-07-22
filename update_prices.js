@@ -46,13 +46,14 @@ async function updatePrices() {
           }
 
           // Step 2: Calculate new price based on weight
-          let newPrice;
+          let rawPrice;
           if (weight < 5) {
-            newPrice = (cost * 1.3 + 10).toFixed(2);
+            rawPrice = (cost * 1.3 + 10).toFixed(2);
           } else {
-            newPrice = (cost * 1.3 + 20).toFixed(2);
+            rawPrice = (cost * 1.3 + 20).toFixed(2);
           }
 
+          const newPrice = Math.ceil(rawPrice);
           console.log(`✅ Updating variant ${variantId} | Cost: £${cost}, Weight: ${weight}g → Price: £${newPrice}`);
 
           // Step 3: Update the variant's price
